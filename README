@@ -1,7 +1,12 @@
 # utility
 
+a (small) number of handy programming convienience functions for clojure
 
 ## Usage
+
+exception
+not-nil?
+get-noisy
 
 
 ## License
