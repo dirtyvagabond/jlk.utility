@@ -21,3 +21,8 @@
      (if-let [rs (get map key)]
        rs
        (apply exception message args))))
+
+(defmacro bulkdefn
+  "bulk define simple functions.  eg. (bulkdefn [x y] add (+ x y) sub (- x y) mul (* x y) div (/ x y))"
+  [args & fns]
+  (conj (map (fn [[name body]] `(defn ~name ~args ~body)) (partition 2 fns)) 'do))
