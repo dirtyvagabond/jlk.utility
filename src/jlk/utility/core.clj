@@ -13,16 +13,24 @@
   [x]
   (not (nil? x)))
 
-(defn get-noisy
+(defn enforced-get
   "like get, but raise exception if key not found"
   ([map key]
      (get-noisy map key "key %s not found in map" key))
-  ([map key message & args]
+  ([map key msg & args]
      (if-let [rs (get map key)]
        rs
-       (apply exception message args))))
+       (apply exception msg args))))
 
 (defmacro bulkdefn
   "bulk define simple functions.  eg. (bulkdefn [x y] add (+ x y) sub (- x y) mul (* x y) div (/ x y))"
-  [args & fns]
-  (conj (map (fn [[name body]] `(defn ~name ~args ~body)) (partition 2 fns)) 'do))
+  [doc args & fns]
+  (conj (map (fn [[name body]] `(defn ~name ~doc ~args ~body)) (partition 2 fns)) 'do))
+
+(defn enforced-split-at
+  "like split-at but throws an exception when there aren't enough elements"
+  [n coll msg & args]
+  (let [[s e] (split-at n coll)]
+    (if (< (count s) n)
+      (apply exception msg args))
+    [s e]))
