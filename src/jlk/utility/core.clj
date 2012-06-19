@@ -16,7 +16,7 @@
 (defn enforced-get
   "like get, but raise exception if key not found"
   ([map key]
-     (get-noisy map key "key %s not found in map" key))
+     (enforced-get map key "key %s not found in map" key))
   ([map key msg & args]
      (if-let [rs (get map key)]
        rs
